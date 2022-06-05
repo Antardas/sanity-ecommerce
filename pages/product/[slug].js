@@ -7,23 +7,44 @@ import {
   AiOutlineStar,
 } from "react-icons/ai";
 import { Product } from "../../components";
+import { useStateContext } from "../../context/StateContext";
 
 const ProductDetails = ({ product, products }) => {
   const [index, setIndex] = useState(0);
   const { image, name, details, price } = product;
+  const {
+    showCart,
+    cartItems,
+    totalPrice,
+    totalQuantity,
+    qty,
+    increaseQuantity,
+    decreaseQuantity,
+    onAdd,
+  } = useStateContext();
+  // onAdd(product, qty);
   return (
     <div>
       <div className="product-detail-container">
         <div>
           <div className="image-container">
-            <img src={urlFor(image && image[index])} alt={name} className="product-detail-image" />
+            <img
+              src={urlFor(image && image[index])}
+              alt={name}
+              className="product-detail-image"
+            />
           </div>
           <div className="small-images-container">
-            {image?.map((item , i) => (
-              <img src={urlFor(item)}
-              className={i === index ? "small-image selected-image" : "small-image"}
-              onMouseEnter={() => setIndex(i)}
-              alt="" />
+            {image?.map((item, i) => (
+              <img
+                key={i}
+                src={urlFor(item)}
+                className={
+                  i === index ? "small-image selected-image" : "small-image"
+                }
+                onMouseEnter={() => setIndex(i)}
+                alt="product_image"
+              />
             ))}
           </div>
         </div>
@@ -45,20 +66,28 @@ const ProductDetails = ({ product, products }) => {
           <div className="quantity">
             <h3>Quantity: </h3>
             <p className="quantity-desc">
-              <span className="minus" onClick="">
+              <span className="minus" onClick={decreaseQuantity}>
                 <AiOutlineMinus />
               </span>
-              <span className="num" onClick="">
-                {0}
+              <span className="num">
+                {qty}
               </span>
-              <span className="plus" onClick="">
+              <span className="plus" onClick={increaseQuantity}>
                 <AiOutlinePlus />
               </span>
             </p>
           </div>
           <div className="buttons">
-            <button type="button" className="add-to-cart" onClick="">Add To Cart</button>
-            <button type="button" className="buy-now" onClick="">Buy Now</button>
+            <button
+              type="button"
+              className="add-to-cart"
+              onClick={() => onAdd(product, qty)}
+            >
+              Add To Cart
+            </button>
+            <button type="button" className="buy-now" >
+              Buy Now
+            </button>
           </div>
         </div>
       </div>
@@ -66,11 +95,10 @@ const ProductDetails = ({ product, products }) => {
         <h2>You May Also Like</h2>
         <div className="marquee">
           <div className="maylike-products-container track">
-            {
-              products.map((item, i) =>(<Product key={i} product={item}/>))
-            }
+            {products.map((item, i) => (
+              <Product key={i} product={item} />
+            ))}
           </div>
-
         </div>
       </div>
     </div>
