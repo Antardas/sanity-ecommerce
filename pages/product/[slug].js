@@ -21,8 +21,14 @@ const ProductDetails = ({ product, products }) => {
     increaseQuantity,
     decreaseQuantity,
     onAdd,
+    setShowCart
   } = useStateContext();
   // onAdd(product, qty);
+
+  const handleBuyNow = () => {
+    onAdd(product, qty);
+    setShowCart(true);
+  }
   return (
     <div>
       <div className="product-detail-container">
@@ -69,9 +75,7 @@ const ProductDetails = ({ product, products }) => {
               <span className="minus" onClick={decreaseQuantity}>
                 <AiOutlineMinus />
               </span>
-              <span className="num">
-                {qty}
-              </span>
+              <span className="num">{qty}</span>
               <span className="plus" onClick={increaseQuantity}>
                 <AiOutlinePlus />
               </span>
@@ -85,7 +89,7 @@ const ProductDetails = ({ product, products }) => {
             >
               Add To Cart
             </button>
-            <button type="button" className="buy-now" >
+            <button type="button" className="buy-now" onClick={handleBuyNow}>
               Buy Now
             </button>
           </div>
@@ -125,15 +129,10 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async ({ params: { slug } }) => {
-  console.dir(slug);
   const query = `*[_type == "product" && slug.current == "${slug}"][0]`;
   const productQuery = '*[_type == "product"]';
   const product = await client.fetch(query);
   const products = await client.fetch(productQuery);
-  console.log({
-    product,
-    products,
-  });
   return {
     props: {
       product,
