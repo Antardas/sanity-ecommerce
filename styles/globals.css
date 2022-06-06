@@ -761,3 +761,8 @@ margin-top: 160px;
   margin: auto;
 }
 }
+
+/* Add Global Transition */
+.transition {
+  transition: all 0.3s ease-in-out;
+}
