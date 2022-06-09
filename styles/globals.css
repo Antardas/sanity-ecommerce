@@ -253,6 +253,7 @@ text-align: end;
 }
 .banner-desc .right{
   line-height: 1.4;
+  width: 25rem;
 }
 .banner-desc .right h3{
   font-weight: 800;
